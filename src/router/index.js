@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Catalog from '@/components/CatalogPage.vue';
 import ProductPage from '@/components/ProductPage.vue';
+import AboutUs from '@/components/AboutUs.vue';
+import UserProfile from '@/components/UserProfile.vue';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Cookies from 'js-cookie';
 import HomeView from '@/views/MainPageView.vue';
@@ -52,6 +54,16 @@ const routes = [
     meta: {
       requiresAuth: true,
     },
+  },
+  {
+    path: '/about',
+    name: 'AboutUs',
+    component: AboutUs,
+  },
+  {
+    path: '/profile',
+    name: 'UserProfile',
+    component: UserProfile,
   },
 ];
 

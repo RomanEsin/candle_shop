@@ -95,27 +95,26 @@ export default {
         data.basket_items.forEach((item) => {
           this.quantities[item.product.id] = item.quantity;
         });
-
-        return axios
-          .get('https://shop.asap-it.tech/api/products')
-          .then((response) => {
-            this.products = response.data.map((item) => ({
-              id: item.id,
-              name: item.title,
-              price: item.price,
-              image: mainbackground, // Пока мы используем статическое изображение
-              quantity: 0,
-            }));
-            this.loading = false;
-          })
-          .catch((error) => {
-            console.error(error);
-            this.loading = false;
-          });
       })
       .catch((error) => {
         console.error(error);
-      });
+      })
+      .finally(() => axios
+        .get('https://shop.asap-it.tech/api/products')
+        .then((response) => {
+          this.products = response.data.map((item) => ({
+            id: item.id,
+            name: item.title,
+            price: item.price,
+            image: mainbackground, // Пока мы используем статическое изображение
+            quantity: 0,
+          }));
+          this.loading = false;
+        })
+        .catch((error) => {
+          console.error(error);
+          this.loading = false;
+        }));
   },
   methods: {
     async addToCart(product) {

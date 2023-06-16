@@ -3,7 +3,7 @@ services:
   app:
     build: .
     ports:
-      - "2246:8080"
+      - "2246:80"
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

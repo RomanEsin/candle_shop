@@ -1,20 +1,13 @@
-# Используйте официальный образ Node.js для запуска
-FROM node:16
-
-# Установите рабочую директорию в контейнере
-WORKDIR /usr/src/app
-
-# Копируйте файлы package.json и yarn.lock для установки зависимостей
-COPY package*.json yarn.lock ./
-
-# Установите зависимости приложения
+# Стадия сборки
+FROM node:14 AS build
+WORKDIR /app
+COPY package*.json ./
 RUN yarn install
-
-# Копируйте оставшуюся часть кода приложения
 COPY . .
+RUN yarn build
 
-# Экспонируйте порт, на котором работает ваше приложение
-EXPOSE 8080
-
-# Запустите приложение
-CMD [ "yarn", "serve" ]
+# Стадия запуска
+FROM nginx:stable-alpine AS run
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

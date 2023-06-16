@@ -36,9 +36,9 @@
                 <v-card-subtitle>{{ product.price }} ₽</v-card-subtitle>
               </router-link>
               <v-card-actions class="justify-center">
-                <div v-if="product.quantity > 0" class="d-flex align-center justify-center">
+                <div v-if="quantities[product.id] > 0" class="d-flex align-center justify-center">
                   <v-btn small color="primary" @click="changeQuantity(product, -1)">-</v-btn>
-                  <div class="mx-2">{{ product.quantity }}</div>
+                  <div class="mx-2">{{ quantities[product.id] }}</div>
                   <v-btn small color="primary" @click="changeQuantity(product, 1)">+</v-btn>
                 </div>
                 <v-btn v-else color="primary" text-color="black" class="d-flex align-center
@@ -66,29 +66,55 @@ export default {
     return {
       loading: true,
       filters: [
-        { text: 'Фильтр 1', value: false },
-        { text: 'Фильтр 2', value: false },
+        {
+          text: 'Фильтр 1',
+          value: false,
+        },
+        {
+          text: 'Фильтр 2',
+          value: false,
+        },
         // добавьте дополнительные фильтры здесь
       ],
       products: [],
       card: null,
+      quantities: {},
     };
   },
   mounted() {
+    const config = {
+      headers: {
+        Authorization: Cookies.get('Authorization'),
+        'Content-Type': 'application/json',
+      },
+    };
     axios
-      .get('https://shop.asap-it.tech/api/products')
-      .then((response) => {
-        this.products = response.data.map((item) => ({
-          id: item.id,
-          name: item.title,
-          price: item.price,
-          image: mainbackground, // Пока мы используем статическое изображение
-        }));
-        this.loading = false;
+      .get('https://shop.asap-it.tech/api/basket', config)
+      .then((newResponse) => {
+        const { data } = newResponse;
+        data.basket_items.forEach((item) => {
+          this.quantities[item.product.id] = item.quantity;
+        });
+
+        return axios
+          .get('https://shop.asap-it.tech/api/products')
+          .then((response) => {
+            this.products = response.data.map((item) => ({
+              id: item.id,
+              name: item.title,
+              price: item.price,
+              image: mainbackground, // Пока мы используем статическое изображение
+              quantity: 0,
+            }));
+            this.loading = false;
+          })
+          .catch((error) => {
+            console.error(error);
+            this.loading = false;
+          });
       })
       .catch((error) => {
         console.error(error);
-        this.loading = false;
       });
   },
   methods: {
@@ -102,10 +128,10 @@ export default {
           },
         });
 
-        // const data = await response.json();
+        const data = await response.json();
 
         if (response.ok) {
-          this.$set(product, 'inCart', (product.quantity || 0) + 1);
+          this.quantities[product.id] = data.quantity;
         } else {
           // обработка ошибок
         }
@@ -113,10 +139,35 @@ export default {
         // обработка ошибок
       }
     },
-    async changeQuantity(product) {
+    async removeFromCart(product) {
+      try {
+        const response = await fetch(`https://shop.asap-it.tech/api/basket/${product.id}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: Cookies.get('Authorization'),
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          this.quantities[product.id] = data.quantity;
+        } else {
+          // обработка ошибок
+        }
+      } catch (error) {
+        // обработка ошибок
+      }
+    },
+    async changeQuantity(product, change) {
       // Здесь отправьте запрос к API для обновления количества товара в корзине
       // Если запрос успешен, обновите product.inCart
-      this.addToCart(product);
+      if (change > 0) {
+        await this.addToCart(product);
+      } else {
+        await this.removeFromCart(product);
+      }
     },
   },
 };

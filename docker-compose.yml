@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  app:
+    build: .
+    ports:
+      - "2246:8080"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules

@@ -33,15 +33,7 @@ const routes = [
   {
     path: '/profile',
     component: MainPage,
-    beforeEnter: (to, from, next) => {
-      const token = Cookies.get('Authorization');
-
-      if (!token) {
-        next('/login');
-      } else {
-        next();
-      }
-    },
+    meta: { requiresAuth: true },
   },
   {
     path: '/login',
@@ -53,11 +45,31 @@ const routes = [
     component: () => import('@/components/RegisterPage.vue'),
     meta: { requiresAuth: false },
   },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: () => import('@/components/CartPage.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (Cookies.get('Authorization')) {
+      next();
+    } else {
+      next('/login');
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

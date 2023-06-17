@@ -5,7 +5,7 @@
         <v-container fluid>
           <v-row>
 
-            <v-col md="3">
+            <v-col md="1">
               <div class="title white--text d-flex align-center justify-center">
                 <v-img
                   contain
@@ -39,9 +39,9 @@
               <div class="title white--text">О компании</div>
               <a class="body-2 white--text" href="/about">О нас</a>
               <br>
-              <a class="body-2 white--text" href="/delivery">Доставка</a>
+              <a class="body-2 white--text" href="/delivery">Рекомендации по использованию</a>
               <br>
-              <a class="body-2 white--text" href="/payment">Оплата</a>
+              <a class="body-2 white--text" href="/payment">Доставка</a>
             </v-col>
 
             <v-col md="3">

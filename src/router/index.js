@@ -6,7 +6,6 @@ import UserProfile from '@/components/UserProfile.vue';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Cookies from 'js-cookie';
 import HomeView from '@/views/MainPageView.vue';
-import MainPage from '@/components/MainPage.vue';
 
 const routes = [
   {
@@ -34,7 +33,7 @@ const routes = [
   },
   {
     path: '/profile',
-    component: MainPage,
+    component: UserProfile,
     meta: { requiresAuth: true },
   },
   {
@@ -59,11 +58,6 @@ const routes = [
     path: '/about',
     name: 'AboutUs',
     component: AboutUs,
-  },
-  {
-    path: '/profile',
-    name: 'UserProfile',
-    component: UserProfile,
   },
 ];
 

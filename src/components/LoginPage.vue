@@ -78,7 +78,11 @@ export default {
           // Set the error message if the response is not ok
           this.errorMessage = 'Неверный логин или пароль';
         } else {
-          Cookies.set('Authorization', `Bearer ${data.access_token}`);
+          const expiresInMinutes = 60; // Пример 60 минут
+          const date = new Date();
+          date.setTime(date.getTime() + (expiresInMinutes * 60 * 1000));
+
+          Cookies.set('Authorization', `Bearer ${data.access_token}`, { expires: date });
           this.$router.push('/profile');
         }
       }

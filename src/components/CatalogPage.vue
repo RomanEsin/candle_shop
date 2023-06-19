@@ -5,23 +5,31 @@
       <v-col cols="12" md="3">
         <h2>Фильтры</h2>
 
-<!--        <v-select-->
-<!--          :items="['Свечи', 'Аромасаше', 'Бомбочки для ванны']"-->
-<!--          label="Тип товара"-->
-<!--          return-object-->
-<!--        ></v-select>-->
+        <!-- Фильтр по цене -->
+        <div>
+          <h3>Цена до:</h3>
+          <v-slider
+            v-model="priceFilter"
+            :min="minPrice"
+            :max="maxPrice"
+            thumb-label
+          ></v-slider>
+        </div>
 
-<!--        <p>Цена:</p>-->
-<!--        <vue-slider-->
-<!--          v-model="priceRange"-->
-<!--          :min="minPrice"-->
-<!--          :max="maxPrice"-->
-<!--          :tooltip="'always'"-->
-<!--          :interval="1"-->
-<!--          :marks="true"-->
-<!--          :process="true"-->
-<!--        />-->
+        <div>
+          <h3>Тип товара</h3>
+          <v-select
+            v-model="typeFilter"
+            :items="productTypes"
+            label="Выберите тип товара"
+            outlined
+            dense
+          ></v-select>
+        </div>
 
+        <div>
+          <v-btn @click="fetchProducts" class="elevation-0">Применить</v-btn>
+        </div>
       </v-col>
 
       <!-- Этот столбец будет отображать карточки товаров -->
@@ -72,7 +80,6 @@
 
 <script>
 import axios from 'axios';
-import mainbackground from '@/assets/mainbackground.png';
 import Cookies from 'js-cookie';
 
 export default {
@@ -86,9 +93,19 @@ export default {
       products: [],
       card: null,
       quantities: {},
+      // Фильтры
+      priceFilter: 5000, // Диапазон цен для фильтрации
+      typeFilter: null, // Тип товара для фильтрации
+      productTypes: [
+        { title: 'Любой', value: null },
+        { title: 'Свечи', value: 'candle' },
+        { title: 'Аромасаше', value: 'arome_sashe' },
+        { title: 'Бомбочки для ванны', value: 'bath_bomb' },
+      ], // Возможные типы товаров
     };
   },
   mounted() {
+    // this.fetchProducts();
     const config = {
       headers: {
         Authorization: Cookies.get('Authorization'),
@@ -124,6 +141,38 @@ export default {
         }));
   },
   methods: {
+    async fetchProducts() {
+      this.loading = true;
+      this.products = [];
+      try {
+        const response = await axios.post(
+          'https://shop.asap-it.tech/api/products/filter',
+          {
+            price_from: 0,
+            price_to: this.priceFilter,
+            type: this.typeFilter,
+          },
+          {
+            headers: {
+              Authorization: Cookies.get('Authorization'),
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        this.products = response.data.map((item) => ({
+          id: item.id,
+          name: item.title,
+          price: item.price,
+          image: item.image,
+          quantity: 0,
+        }));
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.loading = false;
+      }
+    },
     async addToCart(product) {
       if (Cookies.get("Authorization") == null) {
         this.$router.push('/login');

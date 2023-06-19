@@ -19,9 +19,9 @@
       </v-col>
     </v-row>
 
-    <h2 class="text-center mt-4">Популярное</h2>
-
-    <v-row class="ma-8">
+    <v-progress-circular v-if="loading" indeterminate color="primary" class="mb-8"></v-progress-circular>
+    <h2 v-else class="text-center mt-4">Популярное</h2>
+    <v-row v-else class="ma-8">
       <v-col cols="12" sm="4" v-for="product in products" :key="product.id">
         <router-link :to="`/product/${product.id}`">
           <v-img
@@ -50,31 +50,40 @@
 
 <script>
 import mainbackground from '@/assets/mainbackground.png';
+import axios from 'axios';
 
 export default {
   name: 'MainPage',
   data() {
     return {
-      products: [
-        {
-          id: 'candle-1',
-          name: 'Candle 1',
-          image: mainbackground
-        },
-        {
-          id: 'candle-2',
-          name: 'Candle 2',
-          image: mainbackground
-        },
-        {
-          id: 'candle-3',
-          name: 'Candle 3',
-          image: mainbackground
-        }
-      ],
+      loading: true,
+      products: [],
       backgroundImage: mainbackground,
     };
   },
+  methods: {
+    async getTop() {
+      axios
+        .get('https://shop.asap-it.tech/api/products/top')
+        .then((response) => {
+          this.products = response.data.map((item) => ({
+            id: item.id,
+            name: item.title,
+            price: item.price,
+            image: item.image,
+            quantity: 0,
+          }));
+          this.loading = false;
+        })
+        .catch((error) => {
+          console.error(error);
+          this.loading = false;
+        });
+    }
+  },
+  async created() {
+    await this.getTop();
+  }
 };
 </script>
 

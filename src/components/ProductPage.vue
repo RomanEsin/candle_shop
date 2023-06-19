@@ -10,12 +10,12 @@
       ></v-progress-circular>
       <v-col v-if="!loading" cols="12" sm="6">
         <v-img
-          :src="default_img"
+          :src="product.image"
           aspect-ratio="1.7"
         ></v-img>
       </v-col>
       <v-col v-if="!loading" cols="12" sm="6">
-        <v-card>
+        <v-card class="elevation-0">
           <v-card-title>{{ product.title }}</v-card-title>
           <v-card-subtitle>{{ product.price }} ₽</v-card-subtitle>
           <v-card-text>{{ product.description }}</v-card-text>

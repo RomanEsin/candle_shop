@@ -8,6 +8,11 @@
           </v-toolbar>
           <v-form ref="form">
             <v-text-field
+              v-model="name"
+              label="Имя"
+              required
+            ></v-text-field>
+            <v-text-field
               v-model="email"
               :rules="emailRules"
               label="Email"
@@ -35,6 +40,7 @@ export default {
     return {
       email: '',
       password: '',
+      name: '',
       errorMessage: '',
       emailRules: [
         (v) => !!v || 'E-mail is required',
@@ -57,6 +63,7 @@ export default {
           body: JSON.stringify({
             email: this.email,
             password: this.password,
+            name: this.name,
           }),
         });
 

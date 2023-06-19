@@ -9,14 +9,14 @@
             <v-list-item v-for="item in items" :key="item.id">
               <v-row align="center">
                 <v-col cols="2">
-                  <v-img :src="defaultImage" aspect-ratio="1" cover :width="80" :height="80"/>
+                  <v-img :src="item.product.image" aspect-ratio="1" cover :width="80" :height="80"/>
                 </v-col>
                 <v-col cols="6">
-                  <v-list-item-content>
+                  <div>
                     <v-list-item-title>
                       {{ item.product.title }} - {{ item.product.price }}₽
                     </v-list-item-title>
-                  </v-list-item-content>
+                  </div>
                 </v-col>
                 <v-col cols="4" class="text-center">
                   <v-list-item-action>
@@ -44,7 +44,7 @@
           <div v-if="!loading && items.length > 0" class="text-sm-left">
             <h3>Количество товаров: {{ totalCount }}</h3>
             <h3>Общая сумма: {{ total }}₽</h3>
-            <v-btn class="elevation-0" color="#FFD6AB">Оформить заказ</v-btn>
+            <v-btn class="elevation-0" color="#FFD6AB" @click="goToOrder">Оформить заказ</v-btn>
           </div>
         </v-row>
       </v-col>
@@ -112,9 +112,12 @@ export default {
         console.error(error);
       }
     },
+    async goToOrder() {
+      this.$router.push('/create_order');
+    }
   },
   async created() {
-    this.loadCart();
+    await this.loadCart();
   },
   computed: {
     total() {

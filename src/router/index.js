@@ -53,6 +53,14 @@ const routes = [
     },
   },
   {
+    path: '/create_order',
+    name: 'create_order',
+    component: () => import('@/components/CreateOrder.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/about',
     name: 'AboutUs',
     component: AboutUs,

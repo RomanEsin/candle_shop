@@ -25,12 +25,14 @@
       <v-col cols="12" sm="4" v-for="product in products" :key="product.id">
         <router-link :to="`/product/${product.id}`">
           <v-img
+            cover=""
             class="rounded-lg"
             :src="product.image"
             aspect-ratio="1.7"
+            :height="300"
           ></v-img>
         </router-link>
-        <div class="text-center pt-4">{{ product.name }}</div>
+        <div class="text-center pt-4 font-weight-bold text-h6">{{ product.name }}</div>
       </v-col>
     </v-row>
 

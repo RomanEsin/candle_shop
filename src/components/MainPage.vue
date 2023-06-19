@@ -20,21 +20,23 @@
     </v-row>
 
     <v-progress-circular v-if="loading" indeterminate color="primary" class="mb-8"></v-progress-circular>
-    <h2 v-else class="text-center mt-4">Популярное</h2>
-    <v-row v-else class="ma-8">
-      <v-col cols="12" sm="4" v-for="product in products" :key="product.id">
-        <router-link :to="`/product/${product.id}`">
-          <v-img
-            cover=""
-            class="rounded-lg"
-            :src="product.image"
-            aspect-ratio="1.7"
-            :height="300"
-          ></v-img>
-        </router-link>
-        <div class="text-center pt-4 font-weight-bold text-h6">{{ product.name }}</div>
-      </v-col>
-    </v-row>
+    <div v-else>
+      <h2 class="text-center mt-4">Популярное</h2>
+      <v-row class="ma-8">
+        <v-col cols="12" sm="4" v-for="product in products" :key="product.id">
+          <router-link :to="`/product/${product.id}`">
+            <v-img
+              cover=""
+              class="rounded-lg"
+              :src="product.image"
+              aspect-ratio="1.7"
+              :height="300"
+            ></v-img>
+          </router-link>
+          <div class="text-center pt-4 font-weight-bold text-h6">{{ product.name }}</div>
+        </v-col>
+      </v-row>
+    </div>
 
     <v-carousel cycle height="400px" hide-delimiters show-arrows="hover">
       <v-carousel-item

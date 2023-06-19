@@ -44,7 +44,7 @@
           ></v-progress-circular>
           <v-col cols="12" sm="6" md="4" v-for="product in products" :key="product.id">
             <div>
-              <v-card class="ma-5 product-card elevation-0">
+              <v-card class="ma-0 product-card elevation-0">
               <router-link
                 :to="{ name: 'product', params: { id: product.id } }"
                 class="no-underline"

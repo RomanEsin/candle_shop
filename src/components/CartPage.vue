@@ -41,10 +41,10 @@
 
       <v-col cols="12" md="6">
         <v-row align="center" justify="center" style="height: 100%;">
-          <div v-if="!loading && items.length > 0" class="text-end">
+          <div v-if="!loading && items.length > 0" class="text-sm-left">
             <h3>Количество товаров: {{ totalCount }}</h3>
             <h3>Общая сумма: {{ total }}₽</h3>
-            <v-btn color="primary">Оформить заказ</v-btn>
+            <v-btn class="elevation-0" color="#FFD6AB">Оформить заказ</v-btn>
           </div>
         </v-row>
       </v-col>

@@ -1,5 +1,6 @@
 <template>
-  <v-app-bar app class="elevation-0">
+  <v-app-bar app class="elevation-0" color="dark"
+             dark style="background-color:#eeee">
     <v-row no-gutters justify="space-between" align="center" fill-height>
       <v-col cols="3">
         <v-btn text to="/catalog">

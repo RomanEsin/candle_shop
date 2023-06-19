@@ -4,12 +4,24 @@
       <!-- Этот столбец будет служить панелью фильтров -->
       <v-col cols="12" md="3">
         <h2>Фильтры</h2>
-        <v-checkbox
-          v-for="filter in filters"
-          :key="filter.text"
-          v-model="filter.value"
-          :label="filter.text"
-        ></v-checkbox>
+
+<!--        <v-select-->
+<!--          :items="['Свечи', 'Аромасаше', 'Бомбочки для ванны']"-->
+<!--          label="Тип товара"-->
+<!--          return-object-->
+<!--        ></v-select>-->
+
+<!--        <p>Цена:</p>-->
+<!--        <vue-slider-->
+<!--          v-model="priceRange"-->
+<!--          :min="minPrice"-->
+<!--          :max="maxPrice"-->
+<!--          :tooltip="'always'"-->
+<!--          :interval="1"-->
+<!--          :marks="true"-->
+<!--          :process="true"-->
+<!--        />-->
+
       </v-col>
 
       <!-- Этот столбец будет отображать карточки товаров -->
@@ -30,7 +42,8 @@
               >
                 <v-img
                   :src="product.image"
-                  aspect-ratio="1.7"
+                  aspect-ratio="1"
+                  cover
                 ></v-img>
                 <v-card-title>{{ product.name }}</v-card-title>
                 <v-card-subtitle>{{ product.price }} ₽</v-card-subtitle>
@@ -41,8 +54,8 @@
                   <div class="mx-2">{{ quantities[product.id] }}</div>
                   <v-btn small color="primary" @click="changeQuantity(product, 1)">+</v-btn>
                 </div>
-                <v-btn v-else color="primary" text-color="black" class="d-flex align-center
-          justify-center font" @click="addToCart(product)">Добавить в корзину
+                <v-btn v-else background-color="#FFD6AB" text-color="black" class="d-flex align-center
+          justify-center" @click="addToCart(product)">Добавить в корзину
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -54,10 +67,8 @@
 </template>
 
 <script>
-// eslint-disable-next-line import/no-extraneous-dependencies
 import axios from 'axios';
 import mainbackground from '@/assets/mainbackground.png';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import Cookies from 'js-cookie';
 
 export default {
@@ -65,17 +76,9 @@ export default {
   data() {
     return {
       loading: true,
-      filters: [
-        {
-          text: 'Фильтр 1',
-          value: false,
-        },
-        {
-          text: 'Фильтр 2',
-          value: false,
-        },
-        // добавьте дополнительные фильтры здесь
-      ],
+      priceRange: [0, 5000],
+      minPrice: 0,
+      maxPrice: 5000,
       products: [],
       card: null,
       quantities: {},
@@ -106,7 +109,7 @@ export default {
             id: item.id,
             name: item.title,
             price: item.price,
-            image: mainbackground, // Пока мы используем статическое изображение
+            image: item.image, // Пока мы используем статическое изображение
             quantity: 0,
           }));
           this.loading = false;

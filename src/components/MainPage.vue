@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="pa-0">
-    <v-row align="center" justify="center" shring>
+    <v-row align="center" justify="center" shrink>
       <v-col>
         <v-img
           :src="backgroundImage"
@@ -19,14 +19,18 @@
       </v-col>
     </v-row>
 
+    <h2 class="text-center mt-4">Популярное</h2>
+
     <v-row class="ma-8">
-      <v-col cols="12" sm="4" v-for="n in 3" :key="n">
-        <v-img
-          class="rounded-lg"
-          :src="backgroundImage"
-          aspect-ratio="1.7"
-        ></v-img>
-        <div class="text-center pt-4">{{ candleNames[n-1] }}</div>
+      <v-col cols="12" sm="4" v-for="product in products" :key="product.id">
+        <router-link :to="`/product/${product.id}`">
+          <v-img
+            class="rounded-lg"
+            :src="product.image"
+            aspect-ratio="1.7"
+          ></v-img>
+        </router-link>
+        <div class="text-center pt-4">{{ product.name }}</div>
       </v-col>
     </v-row>
 
@@ -51,13 +55,28 @@ export default {
   name: 'MainPage',
   data() {
     return {
-      candleNames: ['Candle 1', 'Candle 2', 'Candle 3'],
+      products: [
+        {
+          id: 'candle-1',
+          name: 'Candle 1',
+          image: mainbackground
+        },
+        {
+          id: 'candle-2',
+          name: 'Candle 2',
+          image: mainbackground
+        },
+        {
+          id: 'candle-3',
+          name: 'Candle 3',
+          image: mainbackground
+        }
+      ],
       backgroundImage: mainbackground,
     };
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 </style>

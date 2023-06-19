@@ -33,9 +33,9 @@
               <div class="title white--text">Каталог</div>
               <a class="body-2 link-style" href="/candles">Свечи</a>
               <br>
-              <a class="body-2 link-style" href="/sets">Наборы</a>
+              <a class="body-2 link-style" href="/sets">Бомбочки для ванны</a>
               <br>
-              <a class="body-2 link-style" href="/sashes">Саше</a>
+              <a class="body-2 link-style" href="/sashes">Аромасаше</a>
             </v-col>
 
             <v-col md="2" class="align-end">
@@ -56,11 +56,11 @@
                 <br>
                 Адрес: Улица Пушкина, дом Кукушкина
                 <br>
-                <v-btn icon>
-                  <a href="https://t.me/your_telegram_username" target="_blank"><v-icon large color="#FFD6AB">mdi-telegram</v-icon></a>
+                <v-btn icon class="elevation-0" color="white">
+                  <a href="https://t.me/your_telegram_username" target="_blank"><v-icon large color="black">mdi-send-variant</v-icon></a>
                 </v-btn>
-                <v-btn icon>
-                  <a href="https://instagram.com/your_instagram_username" target="_blank"><v-icon large color="#FFD6AB">mdi-instagram</v-icon></a>
+                <v-btn icon class="elevation-0" color="#white">
+                  <a href="https://instagram.com/your_instagram_username" target="_blank"><v-icon large color="black">mdi-instagram</v-icon></a>
                 </v-btn>
               </div>
             </v-col>

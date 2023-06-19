@@ -35,7 +35,8 @@
             class="mx-auto"
           ></v-progress-circular>
           <v-col cols="12" sm="6" md="4" v-for="product in products" :key="product.id">
-            <v-card class="ma-5 product-card elevation-0">
+            <div>
+              <v-card class="ma-5 product-card elevation-0">
               <router-link
                 :to="{ name: 'product', params: { id: product.id } }"
                 class="no-underline"
@@ -43,27 +44,30 @@
                 <v-img
                   :src="product.image"
                   aspect-ratio="1"
+                  :height="300"
                   cover
                 ></v-img>
                 <v-card-title>{{ product.name }}</v-card-title>
                 <v-card-subtitle>{{ product.price }} ₽</v-card-subtitle>
               </router-link>
-              <v-card-actions class="justify-center">
-                <div v-if="quantities[product.id] > 0" class="d-flex align-center justify-center">
-                  <v-btn small color="primary" @click="changeQuantity(product, -1)">-</v-btn>
-                  <div class="mx-2">{{ quantities[product.id] }}</div>
-                  <v-btn small color="primary" @click="changeQuantity(product, 1)">+</v-btn>
-                </div>
-                <v-btn v-else background-color="#FFD6AB" text-color="black" class="d-flex align-center
-          justify-center" @click="addToCart(product)">Добавить в корзину
-                </v-btn>
-              </v-card-actions>
             </v-card>
+            </div>
+            <v-card-actions class="justify-center">
+              <div v-if="quantities[product.id] > 0" class="d-flex align-center justify-center">
+                <v-btn small color="black" @click="changeQuantity(product, -1)">-</v-btn>
+                <div class="mx-2">{{ quantities[product.id] }}</div>
+                <v-btn small color="black" @click="changeQuantity(product, 1)">+</v-btn>
+              </div>
+              <v-btn v-else background-color="#FFD6AB" text-color="black" class="d-flex align-center pa-4
+          justify-center" @click="addToCart(product)">Добавить в корзину
+              </v-btn>
+            </v-card-actions>
           </v-col>
         </v-row>
       </v-col>
     </v-row>
   </v-container>
+
 </template>
 
 <script>
@@ -109,7 +113,7 @@ export default {
             id: item.id,
             name: item.title,
             price: item.price,
-            image: item.image, // Пока мы используем статическое изображение
+            image: item.image,
             quantity: 0,
           }));
           this.loading = false;
@@ -121,6 +125,11 @@ export default {
   },
   methods: {
     async addToCart(product) {
+      if (Cookies.get("Authorization") == null) {
+        this.$router.push('/login');
+        return;
+      }
+
       try {
         const response = await fetch(`https://shop.asap-it.tech/api/basket/${product.id}`, {
           method: 'POST',
@@ -177,7 +186,9 @@ export default {
 
 <style scoped>
 .product-card {
-  transition: transform .2s; /* Animation */
+  transition: transform .2s;
+  border-radius: 15px;
+  background-color: #f5f5f5;
 }
 
 .product-card:hover {
@@ -186,9 +197,21 @@ export default {
 
 .no-underline {
   text-decoration: none;
+  color: black;
 }
 
 .no-underline:visited {
   color: inherit;
 }
+
+.v-btn {
+  background-color: #eeeeee !important;
+  border-radius: 10px;
+}
+
+.v-card-subtitle {
+  color: black !important;
+  padding-bottom: 16px;
+}
+
 </style>

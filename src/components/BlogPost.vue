@@ -35,9 +35,22 @@ export default {
       blog: {},
     };
   },
+  watch: {
+    '$route.params.id': {
+      immediate: true, // это означает, что обработчик будет вызван сразу при создании компонента
+      async handler(newType) {
+        await this.getData();
+      },
+    },
+  },
+  methods: {
+    async getData() {
+      const response = await axios.get(`https://shop.asap-it.tech/api/blog/${this.$route.params.id}`);
+      this.blog = response.data;
+    }
+  },
   async created() {
-    const response = await axios.get(`https://shop.asap-it.tech/api/blog/${this.$route.params.id}`);
-    this.blog = response.data;
+    await this.getData()
   },
 };
 </script>

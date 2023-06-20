@@ -136,6 +136,7 @@ export default {
         this.user = response.data;
         this.name = this.user.name;
         this.email = this.user.email;
+        Cookies.set('AdminAccess', this.user.is_superuser);
       } catch (error) {
         console.error(error);
       }

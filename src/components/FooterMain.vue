@@ -31,11 +31,11 @@
 
             <v-col md="2" class="align-end">
               <div class="title white--text">Каталог</div>
-              <a class="body-2 link-style" href="/candles">Свечи</a>
+              <router-link class="body-2 link-style" :to="'/catalog/candle'">Свечи</router-link>
               <br>
-              <a class="body-2 link-style" href="/sets">Бомбочки для ванны</a>
+              <router-link class="body-2 link-style" :to="'/catalog/bath_bomb'">Бомбочки для ванны</router-link>
               <br>
-              <a class="body-2 link-style" href="/sashes">Аромасаше</a>
+              <router-link class="body-2 link-style" :to="'/catalog/arome_sashe'">Аромасаше</router-link>
             </v-col>
 
             <v-col md="2" class="align-end">

@@ -5,6 +5,7 @@ import AboutUs from '@/components/AboutUs.vue';
 import UserProfile from '@/components/UserProfile.vue';
 import Cookies from 'js-cookie';
 import HomeView from '@/views/MainPageView.vue';
+import BlogPost from "@/components/BlogPost.vue";
 const routes = [
   {
     path: '/',
@@ -28,6 +29,11 @@ const routes = [
     path: '/catalog/:type',
     name: 'CatalogByType',
     component: Catalog,
+  },
+  {
+    path: '/blog/:id',
+    name: 'BlogPost',
+    component: BlogPost,
   },
   {
     path: '/product/:id',
@@ -61,6 +67,22 @@ const routes = [
     path: '/create_order',
     name: 'create_order',
     component: () => import('@/components/CreateOrder.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/orders',
+    name: 'orders',
+    component: () => import('@/components/OrdersPage.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/orders/:id',
+    name: 'OrderDetail',
+    component: () => import('@/components/OrderDetail.vue'),
     meta: {
       requiresAuth: true,
     },

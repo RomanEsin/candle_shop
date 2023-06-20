@@ -170,6 +170,10 @@ export default {
     };
     const response = await axios
       .get('https://shop.asap-it.tech/api/basket', config)
+      .catch(() => {})
+    if (response === undefined) {
+      return
+    }
     const { data } = response;
     data.basket_items.forEach((item) => {
       this.quantities[item.product.id] = item.quantity;
@@ -319,7 +323,7 @@ export default {
 <style scoped>
 .product-card {
   transition: transform .2s;
-  border-radius: 15px;
+  border-radius: 16px;
   background-color: #f5f5f5;
 }
 

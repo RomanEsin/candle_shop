@@ -21,8 +21,8 @@
 
     <v-progress-circular v-if="loading" indeterminate color="primary" class="mb-8"></v-progress-circular>
     <div v-else>
-      <h2 class="text-center mt-4">Популярное</h2>
-      <v-row class="ma-8">
+      <h2 class="text-center mt-4 mb-4">Популярное</h2>
+      <v-row class="ml-8 mr-8 mb-8">
         <v-col cols="12" sm="4" v-for="product in products" :key="product.id">
           <router-link :to="`/product/${product.id}`">
             <v-img
@@ -38,17 +38,31 @@
       </v-row>
     </div>
 
-    <v-carousel cycle height="400px" hide-delimiters show-arrows="hover">
-      <v-carousel-item
-        v-for="i in 6"
-        :key="i"
-      >
-        <v-img
-          cover
-          :src="backgroundImage"
-        ></v-img>
-      </v-carousel-item>
-    </v-carousel>
+    <v-progress-circular v-if="loadingSlides" indeterminate color="primary" class="mb-8"></v-progress-circular>
+    <div v-else>
+      <h2 class="text-center mt-4 mb-4">Блог</h2>
+      <v-carousel cycle height="400px" hide-delimiters show-arrows="hover">
+        <v-carousel-item
+          v-for="(slide, i) in slides"
+          :key="i"
+        >
+          <router-link :to="`/blog/${slide.id}`" class="no-underline">
+            <v-img
+              cover
+              :src="slide.image"
+            >
+              <v-container class="fill-height">
+              <v-row align="end">
+                <v-col class="text-white" cols="12">
+                  <h1 class="display-1">{{ slide.title }}</h1>
+                </v-col>
+              </v-row>
+            </v-container>
+            </v-img>
+          </router-link>
+        </v-carousel-item>
+      </v-carousel>
+    </div>
   </v-container>
 </template>
 
@@ -61,8 +75,10 @@ export default {
   data() {
     return {
       loading: true,
+      loadingSlides: true,
       products: [],
       backgroundImage: mainbackground,
+      slides: [],
     };
   },
   methods: {
@@ -87,9 +103,29 @@ export default {
   },
   async created() {
     await this.getTop();
-  }
+  },
+  async mounted() {
+    try {
+      this.loadingSlides = true;
+      const response = await axios.get('https://shop.asap-it.tech/api/blog');
+      this.slides = response.data;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.loadingSlides = false;
+    }
+  },
 };
 </script>
 
 <style scoped lang="scss">
+.no-underline {
+  text-decoration: none;
+  color: inherit;
+}
+
+.no-underline:visited {
+  text-decoration: none;
+  color: inherit;
+}
 </style>

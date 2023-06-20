@@ -45,7 +45,7 @@
           </div>
           <div>
             <v-btn
-              color="primary"
+              color="#FFD6AB"
               :disabled="!selectedAddress"
               @click="createOrder"
             >

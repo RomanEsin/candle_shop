@@ -40,11 +40,11 @@
 
             <v-col md="2" class="align-end">
               <div class="title white--text">О компании</div>
-              <a class="body-2 link-style" href="/about">О нас</a>
+              <router-link class="body-2 link-style" :to="'/blog/1'">О нас</router-link>
               <br>
-              <a class="body-2 link-style" href="/delivery">Рекомендации по использованию</a>
+              <router-link class="body-2 link-style" :to="'/blog/2'">Рекомендации по использованию</router-link>
               <br>
-              <a class="body-2 link-style" href="/payment">Доставка</a>
+              <router-link class="body-2 link-style" :to="'/blog/3'">Доставка</router-link>
             </v-col>
 
             <v-col md="2" class="align-end">

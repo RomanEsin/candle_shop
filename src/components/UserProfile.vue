@@ -136,7 +136,11 @@ export default {
         this.user = response.data;
         this.name = this.user.name;
         this.email = this.user.email;
-        Cookies.set('AdminAccess', this.user.is_superuser);
+        const expiresInMinutes = 60; // Пример 60 минут
+        const date = new Date();
+        date.setTime(date.getTime() + (expiresInMinutes * 60 * 1000));
+
+        Cookies.set('AdminAccess', this.user.is_superuser, { expires: date });
       } catch (error) {
         console.error(error);
       }

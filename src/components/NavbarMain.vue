@@ -16,10 +16,16 @@
         </v-toolbar-title>
       </v-col>
 
-      <v-col cols="3" class="d-flex justify-end align-center">
+      <v-col cols="3">
         <router-link to="/profile" class="no-underline">
           <v-btn icon>
             <v-icon class="text-black">mdi-account</v-icon>
+          </v-btn>
+        </router-link>
+
+        <router-link to="/orders" class="no-underline">
+          <v-btn icon>
+            <v-icon class="text-black">mdi-cube</v-icon>
           </v-btn>
         </router-link>
 
@@ -28,15 +34,6 @@
             <v-icon class="text-black">mdi-cart</v-icon>
           </v-btn>
         </router-link>
-
-        <v-text-field
-          append-icon="mdi-magnify"
-          single-line
-          hide-details
-          rounded
-          filled
-          class="search-field"
-        ></v-text-field>
       </v-col>
     </v-row>
   </v-app-bar>
@@ -44,12 +41,14 @@
 
 <script>
 import logo from '@/assets/logo.png';
+import Cookies from "js-cookie";
 
 export default {
   name: 'NavbarMain',
   data() {
     return {
       logo,
+      isAdmin: Cookies.get('AdminAccess') === 'true',
     };
   },
 };

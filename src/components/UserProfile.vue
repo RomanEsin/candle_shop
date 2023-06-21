@@ -5,10 +5,12 @@
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-text-field v-model="name" label="Имя" :rules="nameRules" required></v-text-field>
       <v-text-field v-model="email" label="E-mail" :rules="emailRules" required></v-text-field>
-      <v-btn color="red" @click="logout">Выйти</v-btn>
+      <v-btn  color="red" @click="logout" class="ml-4 mr-4 elevation-0">Выйти</v-btn>
+      <v-progress-circular v-if="loadingLink" indeterminate="" color="primary" ></v-progress-circular>
+      <v-btn v-else class="elevation-0 mr-4" color="#FFD6AB" @click="openInTelegram()">Привязать телеграм</v-btn>
     </v-form>
 
-    <h2>История заказов</h2>
+    <h2 class="mt-8">История заказов</h2>
     <v-progress-circular v-if="loading" indeterminate color="primary"></v-progress-circular>
     <div v-else>
       <div v-for="order in orders" :key="order.id">
@@ -48,6 +50,7 @@ import router from '@/router';
 
 export default {
   data: () => ({
+    loadingLink: true,
     valid: true,
     name: '',
     nameRules: [
@@ -67,25 +70,49 @@ export default {
     ],
     loading: true,
     orders: [],
-    user: null
+    user: null,
+    link: null
   }),
 
   methods: {
+    openInTelegram() {
+      console.log(this.link);
+      const url = this.link;
+      window.open(url, '_blank');
+    },
+    async getLink() {
+      const config = {
+        headers: {
+          Authorization: Cookies.get('Authorization'),
+          'Content-Type': 'application/json',
+        },
+      };
+
+      try {
+        const response = await axios.get('https://shop.asap-it.tech/api/telegram/link', config);
+        this.link = response.data.link;
+        this.link = 'https://t.me/kotov_shop_bot?start=' + this.link;
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.loadingLink = false;
+      }
+    },
     getStatusTitle(status) {
       const statuses = {
-        created: "Заказ создан",
-        paid: "Заказ оплачен",
-        canceled: "Заказ отменен",
-        delivered: "Заказ выполнен"
+        created: 'Заказ создан',
+        paid: 'Заказ оплачен',
+        canceled: 'Заказ отменен',
+        delivered: 'Заказ выполнен'
       };
       return statuses[status];
     },
     getStatusDescription(status) {
       const descriptions = {
-        created: "Мы получили ваш заказ и обрабатываем его",
-        paid: "Мы получили оплату и готовим ваш заказ",
-        canceled: "Мы отменили ваш заказ",
-        delivered: "Мы доставили ваш заказ"
+        created: 'Мы получили ваш заказ и обрабатываем его',
+        paid: 'Мы получили оплату и готовим ваш заказ',
+        canceled: 'Мы отменили ваш заказ',
+        delivered: 'Мы доставили ваш заказ'
       };
       return descriptions[status];
     },
@@ -149,6 +176,7 @@ export default {
   async created() {
     await this.loadUser();
     await this.loadOrders();
+    await this.getLink();
   },
 };
 </script>

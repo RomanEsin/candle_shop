@@ -9,9 +9,16 @@
           <v-container class="fill-height">
             <v-row align="center">
               <v-col>
-                <h1 class="text-white">
+                <h1 class="text-white text-h2 font-weight-black mb-8">
                   KOTOV Handmade
                 </h1>
+                <p class="text-white text-h6">
+                  KOTOV Handmade предлагает искусно изготовленные ручные свечи, сочетающие в себе
+                  мастерство и страсть. В нашем ассортименте представлены уникальные свечи от
+                  классических до ароматизированных. Уверены, что в эпоху массового производства,
+                  ручная работа - истинная роскошь. Наши свечи не только красивы, но и качественны,
+                  являясь маленькими произведениями искусства, добавляющими уют в ваш дом.
+                </p>
               </v-col>
             </v-row>
           </v-container>
@@ -19,7 +26,8 @@
       </v-col>
     </v-row>
 
-    <v-progress-circular v-if="loading" indeterminate color="primary" class="mb-8"></v-progress-circular>
+    <v-progress-circular v-if="loading" indeterminate color="primary"
+                         class="mb-8"></v-progress-circular>
     <div v-else>
       <h2 class="text-center mt-4 mb-4">Популярное</h2>
       <v-row class="ml-8 mr-8 mb-8">
@@ -38,7 +46,8 @@
       </v-row>
     </div>
 
-    <v-progress-circular v-if="loadingSlides" indeterminate color="primary" class="mb-8"></v-progress-circular>
+    <v-progress-circular v-if="loadingSlides" indeterminate color="primary"
+                         class="mb-8"></v-progress-circular>
     <div v-else>
       <h2 class="text-center mt-4 mb-4">Блог</h2>
       <v-carousel cycle height="400px" hide-delimiters show-arrows="hover">
@@ -52,12 +61,12 @@
               :src="slide.image"
             >
               <v-container class="fill-height">
-              <v-row align="end">
-                <v-col class="text-white" cols="12">
-                  <h1 class="display-1">{{ slide.title }}</h1>
-                </v-col>
-              </v-row>
-            </v-container>
+                <v-row align="end">
+                  <v-col class="text-white" cols="12">
+                    <h1 class="display-1">{{ slide.title }}</h1>
+                  </v-col>
+                </v-row>
+              </v-container>
             </v-img>
           </router-link>
         </v-carousel-item>
